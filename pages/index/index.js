@@ -1,61 +1,54 @@
 let app = getApp();
 //替换成开发者后台设置的安全域名
-let url = "http://xxx.xxx.xxx.xxx:8787";
+let url = "http://127.xxx.xx.1:8080";
 
 Page({
     data:{
-        corpId: '',
         authCode:'',
-        userId:''
+        openId:'',
+        nick:''
+
     },
     onLoad(){
 
         let _this = this;
 
-        this.setData({
-            corpId: app.globalData.corpId
-        })
+        dd.getAuthCode({
+            success:(res)=>{
+                _this.setData({
+                    authCode:res.authCode
+                })
+                
+                dd.httpRequest({
+                    url: url+'/login',
+                    method: 'POST',
+                    data: {
+                        authCode: res.authCode
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        let userInfo = res.data.result;
+                        _this.setData({
+                            openId:userInfo.openid,
+                            nick:userInfo.nick
 
-        if(dd.getAuthCode){
-            dd.alert({
-                content:'dd.getAuthCode'
-            })
-            dd.getAuthCode({
-                success:(res)=>{
-                    _this.setData({
-                        authCode:res.authCode
-                    })
+                        })
+                    },
+                    fail: function(res) {
+                        dd.alert({content: JSON.stringify(res)});
+                    },
+                    complete: function(res) {
+                        dd.hideLoading();
+                    }
                     
-                    dd.httpRequest({
-                        url: url+'/login',
-                        method: 'POST',
-                        data: {
-                            authCode: res.authCode,
-                            corpId:app.globalData.corpId,
-                        },
-                        dataType: 'json',
-                        success: function(res) {
-                            let userId = res.data.userId;
-                            _this.setData({
-                                userId:userId
-                            })
-                        },
-                        fail: function(res) {
-                            dd.alert({content: 'fail'});
-                        },
-                        complete: function(res) {
-                            dd.hideLoading();
-                            //my.alert({content: 'complete'});
-                        }
-                        
-                    });
-                },
-                fail: (err)=>{
-                    dd.alert({
-                        content: JSON.stringify(err)
-                    })
-                }
-            })
-        }
+                });
+            },
+            fail: (err)=>{
+                dd.alert({
+                    content: JSON.stringify(err)
+                })
+            }
+        })
+        
     }
 })
