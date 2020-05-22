@@ -4,9 +4,8 @@ let url = "http://127.0.0.1:8080";
 
 //let url = "http://abcde.vaiwan.com";
 //若要在测试应用中临时使用类似abcdef.vaiwan.com 的二级域名代理到无公网IP的服务端开发环境，
-//请参考内网穿透工具介绍:
-//https://open-doc.dingtalk.com/microapp/debug/ucof2g
-
+//请参考内网穿透工具，注意：内网穿透工具是用于开发测试，当前不保证多个开发者随意设置相同的子域名导致的冲突以及通道稳定性，因此正式应用、正式环境必须是真实的公网IP或者域名，正式应用上线不能使用本工具。
+//https://ding-doc.dingtalk.com/doc#/kn6zg7/hb7000
 
 Page({
     data:{
